@@ -1,32 +1,27 @@
-import { tasksList } from "../../App";
-import deleteIcon from "../../assets/icons/delete.svg";
-import editIcon from "../../assets/icons/edit.svg";
-import SelectStatuses from "../SelectStatuses";
+import TaskRow from "../TaskRow";
+import { Virtuoso } from "react-virtuoso";
+import noTodosImage from "../../assets/images/notodos.jpg";
 
-const TasksList = () => {
-  const taskRowStyle =
-    "flex justify-center flex-1 border-r last:border-r-0 px-[1rem] text-[1.8rem]";
+const TasksList = ({ todosList, loadMore }: any) => {
+  if (todosList?.length == 0)
+    return (
+      <div
+        className="w-full h-[50vh] 
+        flex flex-col items-center justify-center"
+      >
+        <img src={noTodosImage} className="w-[50rem] object-cover" />
+        <h2 className="text-[2rem]"> There Is No Todos Yet...</h2>
+      </div>
+    );
 
   return (
-    <>
-      {tasksList.map((task) => {
-        return (
-          <div className="flex border p-[1rem]">
-            <div className={`${taskRowStyle} !justify-start`}> {task.name}</div>
-            <div className={`${taskRowStyle}`}>{task.createdAt}</div>
-            <div className={`${taskRowStyle}`}>
-              <SelectStatuses defaultValue={task.status} />
-            </div>
-            <div className={`${taskRowStyle}`}>{task.dueDate}</div>
-            <div className={`${taskRowStyle} `}>{task.priority}</div>
-            <div className={`${taskRowStyle} gap-[1.5rem]`}>
-              <img src={editIcon} className="w-[2.5rem] cursor-pointer" />
-              <img src={deleteIcon} className="w-[2.5rem] cursor-pointer" />
-            </div>
-          </div>
-        );
-      })}
-    </>
+    <Virtuoso
+      style={{ height: "500px" }}
+      data={todosList}
+      totalCount={todosList?.length}
+      endReached={loadMore}
+      itemContent={(_, task) => <TaskRow task={task} />}
+    />
   );
 };
 

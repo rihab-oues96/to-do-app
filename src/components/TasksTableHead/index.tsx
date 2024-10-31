@@ -1,4 +1,4 @@
-import { TableHead } from "../../App";
+import { TableHead } from "../../constants";
 
 const TasksTableHead = () => {
   return (
